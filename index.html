@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#b45309">
+<title>গল্প বাংলা — বাংলা গল্পের বিশ্ব</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Baloo+Da+2:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --brand:#b45309;--brand-dark:#92400e;--brand-light:#f59e0b;
+  --gold:#fbbf24;--gold-light:#fcd34d;--gold-dark:#d97706;
+  --bg:#1a1208;--bg-alt:#241a0d;--surface:#2a1f10;--surface-hover:#352814;
+  --text:#fef3c7;--text-secondary:#d4a574;--text-muted:#8b6f47;
+  --border:#3d2e17;--border-light:#4a3819;
+  --danger:#ef4444;--success:#10b981;
+  --shadow-gold:0 10px 40px -10px rgba(251,191,36,.3);
+  --font-bn:'Hind Siliguri',system-ui,sans-serif;
+  --font-story:'Baloo Da 2',system-ui,sans-serif;
+  --font-en:'Plus Jakarta Sans',system-ui,sans-serif;
+}
+[data-theme="light"]{
+  --bg:#fef9f0;--bg-alt:#fef3e0;--surface:#ffffff;--surface-hover:#fff8ed;
+  --text:#451a03;--text-secondary:#78350f;--text-muted:#a16207;
+  --border:#fed7aa;--border-light:#fef3c7;
+}
+html,body{height:100%}
+body{font-family:var(--font-bn);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;transition:background .4s,color .4s;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--brand);border-radius:10px}
+
+/* ============ SPLASH / LOADING ============ */
+#splash{
+  position:fixed;inset:0;z-index:99999;
+  background:radial-gradient(ellipse at center,#2a1f10 0%,#1a1208 70%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .8s;
+}
+#splash.hide{opacity:0;pointer-events:none}
+
+/* বই খোলার অ্যানিমেশন */
+.book-wrap{
+  perspective:1200px;
+  margin-bottom:30px;
+  position:relative;
+}
+.book{
+  width:120px;height:160px;
+  position:relative;
+  transform-style:preserve-3d;
+  animation:bookOpen 2s ease-in-out infinite;
+}
+@keyframes bookOpen{
+  0%,100%{transform:rotateY(0deg)}
+  50%{transform:rotateY(-30deg)}
+}
+.book-cover{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#b45309,#92400e);
+  border-radius:8px 12px 12px 8px;
+  border:3px solid var(--gold);
+  box-shadow:
+    0 0 30px rgba(251,191,36,.4),
+    inset 0 0 30px rgba(0,0,0,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;
+  transform-origin:left center;
+  animation:coverFlip 2s ease-in-out infinite;
+  backface-visibility:hidden;
+}
+@keyframes coverFlip{
+  0%,100%{transform:rotateY(0deg)}
+  50%{transform:rotateY(-160deg)}
+}
+.book-pages{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#fef3c7,#fcd34d);
+  border-radius:8px 12px 12px 8px;
+  border:3px solid var(--gold-dark);
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;
+  color:#92400e;
+}
+
+/* "গল্প বাংলা" লোগো */
+.splash-title{
+  font-family:var(--font-story);
+  font-size:clamp(38px,10vw,60px);
+  font-weight:800;
+  letter-spacing:-1px;
+  background:linear-gradient(135deg,#fcd34d 0%,#f59e0b 40%,#b45309 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  display:flex;gap:4px;justify-content:center;
+  margin-bottom:12px;
+  filter:drop-shadow(0 4px 20px rgba(251,191,36,.4));
+}
+.splash-title span{
+  display:inline-block;
+  opacity:0;
+  transform:translateY(30px) rotate(-10deg) scale(.5);
+  animation:letterReveal .6s forwards;
+}
+@keyframes letterReveal{
+  0%{opacity:0;transform:translateY(30px) rotate(-10deg) scale(.5)}
+  60%{opacity:1;transform:translateY(-8px) rotate(3deg) scale(1.15)}
+  100%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}
+}
+
+.splash-sub{
+  font-size:13px;
+  color:var(--text-secondary);
+  letter-spacing:4px;
+  text-transform:uppercase;
+  opacity:0;
+  animation:fadeUp .8s 1.2s forwards;
+  margin-bottom:40px;
+}
+@keyframes fadeUp{to{opacity:.85;transform:translateY(0)}from{opacity:0;transform:translateY(15px)}}
+
+.splash-bar-wrap{
+  width:240px;height:4px;
+  background:rgba(251,191,36,.15);
+  border-radius:99px;overflow:hidden;
+  margin-bottom:16px;
+}
+.splash-bar{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,#fcd34d,#f59e0b,#b45309);
+  border-radius:99px;
+  animation:barFill 2.4s .3s forwards;
+}
+@keyframes barFill{to{width:100%}}
+
+.splash-status{
+  font-size:12px;
+  color:var(--text-muted);
+  font-weight:500;
+  letter-spacing:.5px;
+  opacity:0;
+  animation:fadeUp .5s .5s forwards;
+}
+
+/* ============ HEADER ============ */
+.header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(26,18,8,.85);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:12px 16px;
+}
+[data-theme="light"] .header{background:rgba(254,249,240,.85)}
+.header-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer;background:none;border:none;color:inherit;font-family:inherit}
+.brand-logo{
+  width:42px;height:42px;border-radius:10px;
+  background:linear-gradient(135deg,#b45309,#92400e);
+  border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  box-shadow:0 4px 12px rgba(251,191,36,.3);
+}
+.brand-text{display:flex;flex-direction:column;line-height:1.1;text-align:left}
+.brand-name{font-family:var(--font-story);font-size:18px;font-weight:800;color:var(--gold-light)}
+.brand-tag{font-size:10px;color:var(--text-muted);font-weight:500}
+
+.header-actions{display:flex;gap:8px;align-items:center}
+.icon-btn{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--surface);border:1.5px solid var(--border);
+  color:var(--text-secondary);font-size:15px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.icon-btn:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+/* ============ MAIN ============ */
+main{max-width:1240px;margin:0 auto;padding:20px 16px 100px}
+
+/* ============ HERO / WELCOME ============ */
+.hero{
+  background:linear-gradient(135deg,rgba(180,83,9,.3),rgba(146,64,14,.15));
+  border:2px solid rgba(251,191,36,.2);
+  border-radius:20px;
+  padding:28px 22px;
+  margin-bottom:24px;
+  position:relative;overflow:hidden;
+  animation:fadeIn .5s;
+}
+.hero::before{
+  content:'📖';
+  position:absolute;font-size:150px;
+  right:-30px;bottom:-40px;opacity:.08;
+  transform:rotate(-15deg);
+}
+.hero-title{
+  font-family:var(--font-story);
+  font-size:clamp(22px,4vw,32px);
+  font-weight:800;
+  color:var(--gold-light);
+  margin-bottom:8px;
+  position:relative;z-index:1;
+  line-height:1.2;
+}
+.hero-sub{
+  font-size:14px;color:var(--text-secondary);
+  margin-bottom:18px;position:relative;z-index:1;
+  line-height:1.7;
+}
+.hero-buttons{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
+.hero-btn{
+  padding:12px 22px;border-radius:12px;
+  background:linear-gradient(135deg,#b45309,#92400e);
+  color:#fff;font-family:var(--font-en);font-weight:700;font-size:14px;
+  display:inline-flex;align-items:center;gap:8px;
+  box-shadow:0 4px 0 #78350f;
+  transition:all .15s;
+}
+.hero-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #78350f}
+.hero-btn.ghost{
+  background:transparent;border:1.5px solid var(--gold);
+  color:var(--gold-light);box-shadow:none;
+}
+.hero-btn.ghost:active{transform:scale(.97)}
+
+/* ============ SECTION ============ */
+.section{margin-bottom:32px;animation:fadeIn .6s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;gap:12px;flex-wrap:wrap;
+}
+.section-title{
+  font-family:var(--font-story);
+  font-size:20px;font-weight:800;
+  color:var(--text);
+  display:flex;align-items:center;gap:10px;
+}
+.section-title i{color:var(--gold);font-size:18px}
+.section-badge{
+  font-size:11px;font-weight:700;
+  color:var(--gold-light);
+  background:rgba(251,191,36,.12);
+  padding:4px 12px;border-radius:99px;
+  border:1px solid rgba(251,191,36,.25);
+}
+.see-all{
+  font-size:12px;font-weight:700;
+  color:var(--gold);cursor:pointer;
+  display:inline-flex;align-items:center;gap:4px;
+}
+.see-all:hover{color:var(--gold-light)}
+
+/* ============ CATEGORY CHIPS ============ */
+.cat-scroll{
+  display:flex;gap:10px;overflow-x:auto;
+  padding-bottom:8px;margin-bottom:20px;
+  scrollbar-width:none;
+}
+.cat-scroll::-webkit-scrollbar{display:none}
+.cat-chip{
+  flex-shrink:0;
+  padding:10px 18px;border-radius:99px;
+  background:var(--surface);border:1.5px solid var(--border);
+  font-size:13px;font-weight:700;
+  color:var(--text-secondary);
+  cursor:pointer;transition:all .2s;
+  display:inline-flex;align-items:center;gap:6px;
+  white-space:nowrap;
+}
+.cat-chip:hover{border-color:var(--gold);color:var(--gold-light)}
+.cat-chip.active{
+  background:linear-gradient(135deg,#b45309,#92400e);
+  color:#fff;border-color:var(--gold);
+  box-shadow:0 4px 12px rgba(251,191,36,.3);
+}
+.cat-emoji{font-size:16px}
+
+/* ============ STORY CARDS ============ */
+.story-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:14px;
+}
+.story-card{
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:all .25s;
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.story-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--gold);
+  box-shadow:0 12px 30px rgba(251,191,36,.15);
+}
+.story-cover{
+  height:130px;
+  background:linear-gradient(135deg,#b45309,#92400e);
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  font-size:54px;
+  overflow:hidden;
+}
+.story-cover::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.5));
+}
+.story-cover-emoji{position:relative;z-index:1}
+.story-cat-tag{
+  position:absolute;top:10px;left:10px;
+  padding:3px 10px;border-radius:99px;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(8px);
+  font-size:10px;font-weight:700;
+  color:var(--gold-light);
+  z-index:2;
+}
+.story-body{padding:14px;flex:1;display:flex;flex-direction:column}
+.story-title{
+  font-family:var(--font-story);
+  font-size:15px;font-weight:700;
+  color:var(--text);
+  margin-bottom:6px;
+  line-height:1.35;
+  display:-webkit-box;
+  -webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.story-desc{
+  font-size:12px;color:var(--text-muted);
+  line-height:1.5;margin-bottom:10px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;
+  flex:1;
+}
+.story-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;color:var(--text-muted);
+  padding-top:10px;border-top:1px solid var(--border-light);
+}
+.story-meta .author{display:flex;align-items:center;gap:6px}
+.story-meta .avatar{
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,#fbbf24,#d97706);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#fff;
+}
+.story-stats{display:flex;gap:10px}
+.story-stats span{display:inline-flex;align-items:center;gap:3px}
+.story-stats i{color:var(--gold);font-size:10px}
+
+/* AI Badge */
+.ai-badge{
+  position:absolute;top:10px;right:10px;
+  padding:3px 9px;border-radius:99px;
+  background:linear-gradient(135deg,#8b5cf6,#7c3aed);
+  font-size:9px;font-weight:800;
+  color:#fff;
+  z-index:2;
+  letter-spacing:.5px;
+}
+
+/* ============ BOTTOM NAV ============ */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  z-index:100;
+  background:rgba(26,18,8,.92);
+  backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  padding:8px 0 max(8px, env(safe-area-inset-bottom));
+  display:flex;justify-content:space-around;
+  max-width:1240px;margin:0 auto;
+}
+[data-theme="light"] .bottom-nav{background:rgba(254,249,240,.92)}
+.bnav-item{
+  flex:1;padding:6px 4px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:10px;font-weight:700;
+  color:var(--text-muted);
+  transition:all .2s;
+  background:none;border:none;cursor:pointer;
+}
+.bnav-item i{font-size:20px}
+.bnav-item.active{color:var(--gold)}
+.bnav-item:hover{color:var(--gold-light)}
+
+/* ============ TOAST ============ */
+.toast{
+  position:fixed;top:80px;left:50%;
+  transform:translateX(-50%) translateY(-120px);
+  background:var(--surface);
+  border:2px solid var(--gold);
+  padding:12px 22px;border-radius:14px;
+  font-size:13px;font-weight:700;
+  color:var(--text);
+  z-index:1000;
+  transition:transform .4s cubic-bezier(.5,1.5,.7,1);
+  box-shadow:0 10px 40px rgba(0,0,0,.4);
+  max-width:90vw;text-align:center;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ============ MODAL ============ */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(8px);
+  z-index:500;display:none;
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex}
+.modal-box{
+  background:var(--surface);
+  border:2px solid var(--gold);
+  border-radius:20px;
+  padding:24px;max-width:420px;width:100%;
+  animation:popIn .3s cubic-bezier(.5,1.5,.7,1);
+}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* ============ PAGES ============ */
+.page{display:none;animation:fadeIn .4s}
+.page.active{display:block}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:640px){
+  .story-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .story-cover{height:110px;font-size:44px}
+  .story-title{font-size:13px}
+  .story-desc{font-size:11px}
+  main{padding:16px 12px 90px}
+  .hero{padding:22px 18px}
+}
+@media(max-width:400px){
+  .story-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ SPLASH ============ -->
+<div id="splash">
+  <div class="book-wrap">
+    <div class="book">
+      <div class="book-pages">📖</div>
+      <div class="book-cover">📚</div>
+    </div>
+  </div>
+  <div class="splash-title" id="splashTitle"></div>
+  <div class="splash-sub">বাংলা গল্পের জগৎ</div>
+  <div class="splash-bar-wrap"><div class="splash-bar"></div></div>
+  <div class="splash-status" id="splashStatus">গল্পের পাতা উল্টাচ্ছি...</div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="header">
+  <div class="header-inner">
+    <button class="brand" onclick="switchPage('home')">
+      <div class="brand-logo">📖</div>
+      <div class="brand-text">
+        <span class="brand-name">গল্প বাংলা</span>
+        <span class="brand-tag">বাংলা গল্পের জগৎ</span>
+      </div>
+    </button>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="toggleTheme()" title="থিম">
+        <i class="fas fa-sun" id="themeIcon"></i>
+      </button>
+      <button class="icon-btn" onclick="switchPage('profile')" title="প্রোফাইল">
+        <i class="fas fa-user"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MAIN ============ -->
+<main>
+
+  <!-- ===== HOME PAGE ===== -->
+  <div class="page active" id="page-home">
+    
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-title">স্বাগতম! 📖</div>
+      <div class="hero-sub">বাংলার সেরা গল্পের জগতে। পড়ুন, লিখুন, AI দিয়ে নতুন গল্প বানান।</div>
+      <div class="hero-buttons">
+        <button class="hero-btn" onclick="switchPage('ai-story')">
+          <i class="fas fa-magic"></i> AI গল্প বানাও
+        </button>
+        <button class="hero-btn ghost" onclick="switchPage('write')">
+          <i class="fas fa-pen"></i> নিজে লিখুন
+        </button>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">
+          <i class="fas fa-tags"></i>
+          ক্যাটাগরি
+        </div>
+      </div>
+      <div class="cat-scroll" id="catScroll"></div>
+    </div>
+
+    <!-- Trending -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">
+          <i class="fas fa-fire"></i>
+          ট্রেন্ডিং গল্প
+        </div>
+        <span class="section-badge" id="trendingBadge">🔥 আজকের</span>
+      </div>
+      <div class="story-grid" id="trendingStories"></div>
+    </div>
+
+    <!-- AI Generated -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">
+          <i class="fas fa-robot"></i>
+          AI-জেনারেটেড গল্প
+        </div>
+        <span class="see-all" onclick="switchPage('ai-story')">সব দেখুন <i class="fas fa-arrow-right"></i></span>
+      </div>
+      <div class="story-grid" id="aiStories"></div>
+    </div>
+
+    <!-- Children's Stories -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">
+          <i class="fas fa-child"></i>
+          শিশুদের গল্প
+        </div>
+        <span class="see-all" onclick="filterCategory('শিশু')">সব দেখুন <i class="fas fa-arrow-right"></i></span>
+      </div>
+      <div class="story-grid" id="kidStories"></div>
+    </div>
+
+    <!-- Audio Stories -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">
+          <i class="fas fa-headphones"></i>
+          অডিও গল্প
+        </div>
+      </div>
+      <div class="story-grid" id="audioStories"></div>
+    </div>
+
+  </div>
+
+  <!-- ===== STORY READ PAGE ===== -->
+  <div class="page" id="page-story">
+    <div id="storyReader"></div>
+  </div>
+
+  <!-- ===== AI STORY PAGE ===== -->
+  <div class="page" id="page-ai-story">
+    <div id="aiStoryUI"></div>
+  </div>
+
+  <!-- ===== WRITE PAGE ===== -->
+  <div class="page" id="page-write">
+    <div id="writeUI"></div>
+  </div>
+
+  <!-- ===== CATEGORY PAGE ===== -->
+  <div class="page" id="page-category">
+    <div id="categoryUI"></div>
+  </div>
+
+  <!-- ===== PROFILE PAGE ===== -->
+  <div class="page" id="page-profile">
+    <div id="profileUI"></div>
+  </div>
+
+</main>
+
+<!-- ============ BOTTOM NAV ============ -->
+<nav class="bottom-nav">
+  <button class="bnav-item active" data-page="home" onclick="switchPage('home',this)">
+    <i class="fas fa-home"></i>
+    <span>হোম</span>
+  </button>
+  <button class="bnav-item" data-page="category" onclick="switchPage('category',this)">
+    <i class="fas fa-book"></i>
+    <span>গল্প</span>
+  </button>
+  <button class="bnav-item" data-page="ai-story" onclick="switchPage('ai-story',this)">
+    <i class="fas fa-magic"></i>
+    <span>AI গল্প</span>
+  </button>
+  <button class="bnav-item" data-page="write" onclick="switchPage('write',this)">
+    <i class="fas fa-pen"></i>
+    <span>লিখুন</span>
+  </button>
+  <button class="bnav-item" data-page="profile" onclick="switchPage('profile',this)">
+    <i class="fas fa-user"></i>
+    <span>প্রোফাইল</span>
+  </button>
+</nav>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast"></div>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<script>
+'use strict';
+
+/* ============================================================
+   গল্প বাংলা — Main Script
+   ============================================================ */
+
+/* ---------- স্টোরেজ ---------- */
+var STORE_KEY = 'golpo_bangla_v1';
+function loadData(){
+  try{
+    var d = JSON.parse(localStorage.getItem(STORE_KEY));
+    if(d && typeof d === 'object') return d;
+  }catch(e){}
+  return { userStories: [], liked: [], read: [], theme: 'dark' };
+}
+function saveData(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(APP)); }catch(e){}
+}
+var APP = loadData();
+
+/* ============================================================
+   ক্যাটাগরি
+   ============================================================ */
+var CATEGORIES = [
+  { id: 'all', name: 'সব', emoji: '📚' },
+  { id: 'ভূত', name: 'ভূত', emoji: '👻' },
+  { id: 'প্রেম', name: 'প্রেম', emoji: '💕' },
+  { id: 'রহস্য', name: 'রহস্য', emoji: '🔍' },
+  { id: 'হাসির', name: 'হাসির', emoji: '😂' },
+  { id: 'শিশু', name: 'শিশু', emoji: '🧒' },
+  { id: 'ইসলামিক', name: 'ইসলামিক', emoji: '🕌' },
+  { id: 'সাহসিক', name: 'সাহসিক', emoji: '⚔️' },
+  { id: 'দুঃখ', name: 'দুঃখ', emoji: '😢' },
+  { id: 'জীবন', name: 'জীবন', emoji: '🌱' },
+  { id: 'কল্পবিজ্ঞান', name: 'কল্পবিজ্ঞান', emoji: '🚀' },
+  { id: 'রূপকথা', name: 'রূপকথা', emoji: '🧚' }
+];
+
+/* ============================================================
+   স্টক গল্প — ১৫টি বাংলা গল্প
+   ============================================================ */
+var STOCK_STORIES = [
+  {
+    id: 's1',
+    title: 'অন্ধকার রাতের মেহমান',
+    category: 'ভূত',
+    emoji: '👻',
+    author: 'গল্প বাংলা',
+    time: '৭ মিনিট',
+    likes: 1240,
+    content: 'সেদিন ছিল অমাবস্যার রাত। টিপ টিপ করে বৃষ্টি পড়ছিল। আমি তখন আমার দাদির বাড়িতে ছিলাম — পুরনো এক আমবাগানের মাঝখানে সেই বাড়ি...\n\nরাত ১২টার দিকে হঠাৎ করে দরজায় কে যেন টোকা দিল। টোকা টোকা টোকা। তিনবার। আমি ভয়ে দাদির পাশে গিয়ে বসলাম।\n\nদাদি বললেন, "চুপ থাক, চুপ।" কিন্তু দরজা নিজে নিজেই খুলে গেল। একটা অদ্ভুত শীতল বাতাস ঘরে ঢুকে পড়ল। মোমবাতির আগুন নিভে গেল।\n\nআমি দাদির হাত শক্ত করে ধরলাম। অন্ধকারে কে যেন আমার দিকে তাকিয়ে আছে — যেন হাজার বছর আগের কোনো চোখ...'
+  },
+  {
+    id: 's2',
+    title: 'প্রথম দেখায় ভালোবাসা',
+    category: 'প্রেম',
+    emoji: '💕',
+    author: 'রিয়া',
+    time: '৫ মিনিট',
+    likes: 2150,
+    content: 'পাঠশালার সামনে থেকে প্রতি সকালে তাকে দেখতাম। স্কুলের সাদা-নীল ইউনিফর্মে, চুলে একটা লাল ফিতা। তার হাসি ছিল ঋতু বদলের মতো — একদিন রোদ, একদিন বৃষ্টি।\n\nসেদিন ছিল মঙ্গলবার। আমি তাকে প্রথমবার সাহস করে বললাম, "তোমার নামটা জানতে পারি?"\n\nসে মুচকি হেসে বলল, "আগে তোমারটা বলো।"\n\nসেদিন থেকে শুরু। দুই কিশোরের প্রথম প্রেম। আজ দশ বছর পরেও সেদিনের কথা মনে পড়লে বুকে একটা গরম ভাব খেলে যায়...'
+  },
+  {
+    id: 's3',
+    title: 'রহস্যময় চিঠি',
+    category: 'রহস্য',
+    emoji: '🔍',
+    author: 'রহমান',
+    time: '৯ মিনিট',
+    likes: 1780,
+    content: 'প্রতিদিন সকালে আমার দরজার নিচে একটা চিঠি থাকত। কোনো নাম নেই, কোনো ঠিকানা নেই। শুধু একটা লাইন লেখা — "তুমি কি জানতে চাও সত্যিটা?"\n\nপ্রথমে ভেবেছিলাম কেউ প্র্যাংক করছে। কিন্তু চিঠিগুলোতে সবসময় আমার সঠিক তথ্য থাকত। আমার জন্ম তারিখ, আমার বাবার নাম, আমার শিক্ষকের নাম — এমনকি আমার গোপন কথা...\n\nসাত দিন পর সপ্তম চিঠিতে লেখা ছিল, "আজ রাত ১২টায় পুরনো বাড়িতে এসো। আপনার জীবনের সবচেয়ে বড় সত্য জানতে পারবে।"\n\nআমি গিয়েছিলাম। আর যা দেখলাম, তা আমাকে চিরকালের জন্য বদলে দিল...'
+  },
+  {
+    id: 's4',
+    title: 'চাচার রসিকতা',
+    category: 'হাসির',
+    emoji: '😂',
+    author: 'হাসির',
+    time: '৪ মিনিট',
+    likes: 3200,
+    content: 'আমার চাচা পুরো গ্রামের সেরা রসিক। একদিন তিনি বাজারে গেলেন আর বললেন, "আজ আমি একটা হাসির জিনিস নিয়ে আসব।"\n\nসন্ধ্যায় ফিরে দেখি, একটা টিনের বাক্স আর একটা লম্বা দড়ি নিয়ে এসেছেন।\n\n"এই বাক্সে কী আছে চাচা?" জিজ্ঞেস করলাম।\n\n"গোপন," বললেন চাচা। "তবে এটা আমার নতুন ইনভেনশন — পচা ডিমের গন্ধ শুঁকে আন্দাজ করার মেশিন!"\n\nজানালেন, দড়ি একদিকে বেঁধে অন্য দিকে টান দিলে বাক্স থেকে একটা বিড়াল লাফ দিয়ে বের হবে। আমরা সবাই অপেক্ষা করলাম। দড়ি টানলাম।\n\nবিড়াল বের হলো না — বের হলো চাচার নিজের প্যান্ট, ছিঁড়ে...\n\nসেই দিন থেকে চাচা কিছু বললেই আমরা দৌড়ে পালাই! 😂'
+  },
+  {
+    id: 's5',
+    title: 'ছোট্ট রুপার নতুন বন্ধু',
+    category: 'শিশু',
+    emoji: '🧒',
+    author: 'গল্প বাংলা',
+    time: '৫ মিনিট',
+    likes: 890,
+    content: 'ছোট্ট রুপার বয়স সাত বছর। সে স্কুলে নতুন। কেউ তার সাথে খেলতে চায় না। সবাই তাকে "নতুন মেয়ে" বলে ডাকে।\n\nএকদিন রুপা স্কুলের পিছনে একটা ছোট্ট বিড়ালছানা দেখতে পেল। বিড়ালছানাটা একদম একা, ভিজে, কাঁপছে।\n\nরুপা তার নিজের দুপুরের খাবার বিড়ালছানাকে খাওয়াল। পরদিন আবার গেল। এভাবে কয়েকদিন।\n\nএকদিন দেখল, স্কুলের আরও তিনজন বাচ্চা বিড়ালছানার কাছে এসেছে। রুপা প্রথমে ভয় পেল — তারাই তো তাকে খেলায় নেয় না।\n\nকিন্তু একজন বলল, "তুমি এই বিড়ালের জন্য এত কিছু করেছ? আমরা তোমার সাথে খেলতে চাই!"\n\nসেই দিন থেকে রুপার জীবনে প্রথম সত্যিকারের বন্ধু হলো...'
+  },
+  {
+    id: 's6',
+    title: 'নামাজের আলো',
+    category: 'ইসলামিক',
+    emoji: '🕌',
+    author: 'ইসলামিক',
+    time: '৬ মিনিট',
+    likes: 1450,
+    content: 'আব্দুল করিম প্রতিদিন ফজরের নামাজ পড়তেন মসজিদে। বয়স ছিল তার সাতাত্তর বছর। হাঁটার সমস্যা ছিল। তবুও ঠান্ডা, গরম, ঝড়, বৃষ্টি — কিছুই তাকে আটকাতে পারত না।\n\nএকদিন রাতে ঘন বৃষ্টিতে ভিজে তিনি অসুস্থ হয়ে পড়লেন। ডাক্তার বললেন, "কয়েকদিন বিশ্রাম নিতে হবে, মসজিদে যাবেন না।"\n\nকরিম সাহেব বললেন, "ঠিক আছে।" কিন্তু পরদিন ভোরে দেখা গেল, তিনি আবার মসজিদের পথে।\n\nএকজন জিজ্ঞেস করল, "এত কষ্ট কেন, দাদা?"\n\nকরিম সাহেব মুচকি হেসে বললেন, "আল্লাহর ডাক আমার চেয়ে বেশি কষ্ট দেয় না। আমি যতবার যাই, ততবার মনে হয় — আল্লাহ আমাকে ডাকছেন।"\n\nসেই রাতের পর থেকে পুরো গ্রামের মানুষ তাকে মসজিদে নিয়ে যায়। সেদিনের সেই রাত বদলে দিল গ্রামের সবাইকে...'
+  },
+  {
+    id: 's7',
+    title: 'শেরপার সাহস',
+    category: 'সাহসিক',
+    emoji: '⚔️',
+    author: 'রহমান',
+    time: '৮ মিনিট',
+    likes: 1100,
+    content: 'তেনজিং শেরপা যখন প্রথমবার এভারেস্টে উঠতে চাইলেন, তখন কেউ বিশ্বাস করত না। "তুমি শুধু গাইড, পর্বত আরোহী নও," কেউ কেউ বলত।\n\nকিন্তু তেনজিং শুনতেন না। প্রতিদিন ভোরে উঠতেন। বরফের মাঝে হাঁটতেন। বাতাস কম থাকলেও পিছু হটতেন না।\n\nসেদিন যখন তিনি চূড়ায় উঠলেন,整个世界 স্থির হয়ে গেল। হাজারো কিলোমিটার নিচে পৃথিবী — ছোট একটা গোলক।\n\nএবং তেনজিং সেই প্রথম ভাষায় বললেন, "আমি কাজ করেছি কারণ আমি জানতাম — সাহস মানে ভয় না পাওয়া নয়, সাহস মানে ভয় থাকা সত্ত্বেও এগিয়ে যাওয়া।"\n\nসেই কথাটা আজও বিশ্বের সব পর্বত আরোহীর হৃদয়ে বাজে...'
+  },
+  {
+    id: 's8',
+    title: 'আমার মায়ের হাত',
+    category: 'দুঃখ',
+    emoji: '😢',
+    author: 'তানিয়া',
+    time: '৬ মিনিট',
+    likes: 2890,
+    content: 'মা মারা যাওয়ার পর প্রথমবার আমি তার রান্নাঘরে ঢুকলাম। তিনি ব্যবহার করা হাঁড়ি, খুন্তি, সব সাজানো — যেন তিনি এইমাত্র উঠে গেছেন।\n\nতার একটা পুরোনো কাপড়ের ব্যাগে আমি খুঁজে পেলাম একটা ছোট ডায়েরি। সেই ডায়েরিতে লেখা ছিল তার প্রতিদিনের হিসাব — কত টাকা বাজার খরচ, কত টাকা সঞ্চয়, কত টাকা আমার পড়াশোনার জন্য।\n\nশেষ পৃষ্ঠায় লেখা ছিল, "আমার মেয়ে ডাক্তার হলে আমি সব কষ্ট ভুলে যাব।"\n\nসেদিন আমি কেঁদেছিলাম। আজ আমি ডাক্তার। কিন্তু মা নেই তার হাতটা আমার মাথায় রাখার জন্য।\n\nতবুও আমি জানি — মায়ের হাত সবসময় আমার মাথায় আছে, অদৃশ্য ভাবে...'
+  },
+  {
+    id: 's9',
+    title: 'বাঁশবনের রহস্য',
+    category: 'ভূত',
+    emoji: '👻',
+    author: 'গল্প বাংলা',
+    time: '৭ মিনিট',
+    likes: 980,
+    content: 'গ্রামের শেষে ছিল একটা বিশাল বাঁশবন। কেউ সেখানে যায় না। পুরনো দিনের মানুষ বলে, ওখানে নাকি এক মা আর তার শিশুর আত্মা থাকে।\n\nএকদিন সাহসী কিশোর শাহীন একা বাঁশবনে গেল। তার হাতে ছিল টর্চ আর একটা ছোট ছুরি।\n\nভেতরে ঢুকে সে একটা অদ্ভুত কান্নার শব্দ শুনল। কাছাকাছি গেল। একটা বাঁশ গাছের নিচে বসে আছে — এক মা, তার বুকে ছোট একটি শিশু।\n\nশাহীন ভয়ে পালাবে ভাবে। কিন্তু মায়ের মুখে কোনো ভয় নেই, শুধু দুঃখ।\n\nমা বলল, "ভয় পেয়ো না। আমি শুধু তোমাকে একটা কথা বলতে চাই। আমার ছেলেটা মরে গেছে সাতান্ন বছর আগে। আজ তার জন্মদিন। আমি প্রতিদিন তার জন্য অপেক্ষা করি।"\n\nসেই রাত থেকে শাহীন প্রতিবছর সেই মায়ের জন্য একটা মোমবাতি জ্বালায়...'
+  },
+  {
+    id: 's10',
+    title: 'নদীর পাড়ের কিশোর',
+    category: 'জীবন',
+    emoji: '🌱',
+    author: 'গল্প বাংলা',
+    time: '৫ মিনিট',
+    likes: 1560,
+    content: 'পদ্মা নদীর পাড়ে এক কিশোর প্রতিদিন বসে থাকত। তার নাম রফিক। বাবা ছিলেন নৌকার মাঝি। একদিন ঝড়ে নৌকা ডুবে বাবা মারা যান।\n\nএরপর রফিকের মা বললেন, "এখন তুইও মাঝি হবি।"\n\nরফিক রাজি হলো না। সে বলল, "মা, আমি পড়ব। আমি চাই না আর কেউ নদীতে মরুক। আমি ইঞ্জিনিয়ার হব।"\n\nগ্রামের মানুষ হাসল। বলল, "গরিবের ছেলে ইঞ্জিনিয়ার হয় না।"\n\nরফিক উত্তর দিল, "যে নিজের স্বপ্নে বিশ্বাস করে না, তার ভাগ্য বদলায় না।"\n\nদশ বছর পর রফিক সেই নদীতেই ইঞ্জিনিয়ার হয়ে বাঁধ বানাল। গ্রাম রক্ষা পেল।\n\nআজ পদ্মার পাড়ে তার নামে একটা সেতু আছে...'
+  },
+  {
+    id: 's11',
+    title: 'সময় যন্ত্রের আবিষ্কার',
+    category: 'কল্পবিজ্ঞান',
+    emoji: '🚀',
+    author: 'গল্প বাংলা',
+    time: '৯ মিনিট',
+    likes: 1340,
+    content: 'ড. আরিফ বাংলাদেশের প্রথম বিজ্ঞানী যিনি সময় যন্ত্র আবিষ্কার করেছেন। কিন্তু তার সমস্যা — যন্ত্রটি শুধু ভবিষ্যতে যেতে পারে, ফিরে আসতে পারে না।\n\nসে ভাবল, "একবার গেলে চিরকাল সেখানে থাকতে হবে।"\n\nএকদিন সাহস করে সে যন্ত্র চালু করল। চোখ খুলে দেখল — ২০৭৫ সালের ঢাকা।\n\nচারদিকে ফ্লাইং কার, ঘোলা আকাশ, কৃত্রিম গাছ। কিন্তু তার চেয়ে বেশি অবাক হল এই দেখে — বাংলাদেশ তখনো বাংলাদেশ, কিন্তু চিরকালের গরিব দেশ।\n\nড. আরিফ বুঝল, প্রযুক্তি একাই দেশ বদলায় না, মানুষ বদলায়।\n\nসে ফিরে যেতে চাইল। কিন্তু যন্ত্র কাজ করল না। চিরকালের জন্য আটকে গেল ২০৭৫ সালে...'
+  },
+  {
+    id: 's12',
+    title: 'রাজকন্যার শপথ',
+    category: 'রূপকথা',
+    emoji: '🧚',
+    author: 'গল্প বাংলা',
+    time: '৭ মিনিট',
+    likes: 1720,
+    content: 'সোনারপুর রাজ্যে ছিল এক রাজকন্যা — নাম মায়াবতী। তার রূপ ছিল চাঁদের মতো। কিন্তু তার হৃদয় ছিল পাথরের মতো।\n\nসে বলত, "ভালোবাসা শুধু দুর্বলদের আবিষ্কার। আমি কখনো ভালোবাসব না।"\n\nএকদিন রাজ্যের সবচেয়ে গরিব কিশোর তাকে দেখতে গেল। তার হাতে ছিল একটা কাদামাটি দিয়ে বানানো পাখি।\n\nমায়াবতী বলল, "এটা কী?"\n\nকিশোর বলল, "এটা একটা পাখি। প্রতিদিন এই মাটিটা আমার হাতে গরম থাকে। কাদামাটি ঠান্ডা। কিন্তু হাত না ছাড়লে একদিন এটা উড়বে।"\n\nমায়াবতী সেই কিশোরকে ছাড়তে পারে না। তার পাথরের হৃদয় গলতে শুরু করল।\n\nসে শপথ নিল, "আমি রাজ্য ছেড়ে দেব, কিন্তু এই মানুষটাকে ছাড়ব না।"\n\nআজ সোনারপুর রাজ্যে সেই কিশোরের নামেও রাজকন্যার নামও মন্দিরে লেখা...'
+  },
+  {
+    id: 's13',
+    title: 'আমার দাদার ঘড়ি',
+    category: 'জীবন',
+    emoji: '🌱',
+    author: 'গল্প বাংলা',
+    time: '৫ মিনিট',
+    likes: 2180,
+    content: 'দাদার একটা সোনার ঘড়ি ছিল। প্রতিদিন সকালে সেটা দেখে উঠতেন। নামাজের সময় দেখতেন। রাতে ঘুমাতে যাওয়ার আগে দেখতেন।\n\nঘড়িটা ছিল ইংরেজ আমলের। কোনো বিদেশি সাহেবের কাছ থেকে পাওয়া।\n\nআমি ছোটবেলায় ঘড়িটা নিয়ে খেলতাম। দাদা রাগ করতেন, "এটা আমার জীবন, দিবি না।"\n\nদাদা মারা যাওয়ার আগে ঘড়িটা আমার হাতে দিয়ে বললেন, "এটা রেখো। এটা শুধু ঘড়ি নয় — এটা সময়, এটা স্মৃতি, এটা আমার জীবন।"\n\nআজও আমি ঘড়িটা পরি। সেটার টিক টিক শুনলে মনে হয় দাদা পাশে বসলেন।\n\nআমি বুঝতে পারি, সময় থামে না। কিন্তু সময়ের স্মৃতি চিরকাল থাকে...'
+  },
+  {
+    id: 's14',
+    title: 'মিলন মেলায় ভূত',
+    category: 'হাসির',
+    emoji: '😂',
+    author: 'হাসির',
+    time: '৬ মিনিট',
+    likes: 2650,
+    content: 'গত বছর বইমেলায় এক অদ্ভুত ঘটনা ঘটেছিল। এক ভূত এসেছিল বই কিনতে! সত্যি সত্যি ভূত।\n\nলোকটা সাদা চাদরে মোড়ানো, কিন্তু বেশ হাসিখুশি। দোকানদার প্রথমে ভয়ে কেঁপে গেল।\n\nভূত বলল, "ভাই, হুমায়ূন আহমেদের নতুন বইটা আছে?"\n\nদোকানদার বলল, "আপনি ভূত না?"\n\nভূত বলল, "ভূত হই, কিন্তু বই পড়তে ভালোবাসি। চুরি করি না, টাকা দিয়ে কিনি।"\n\nদোকানদার অবাক। "ভূতের কাছে টাকা হয়?"\n\nভূত বলল, "আমরা ভূত হয়ে গেছি বই পড়তে পড়তে, টাকা তো আছেই।"\n\nসবাই হেসে ফেলল। সেই ভূত ৫টা বই কিনে চলে গেল। কেউ জানল না তার নাম কী।\n\nকিন্তু তার নাম এখন সবাই জানে — "পড়ুয়া ভূত"। 😂'
+  },
+  {
+    id: 's15',
+    title: 'শেষ ট্রেনের যাত্রী',
+    category: 'রহস্য',
+    emoji: '🔍',
+    author: 'গল্প বাংলা',
+    time: '৭ মিনিট',
+    likes: 1890,
+    content: 'রাতের শেষ ট্রেন। গাড়ি প্রায় ফাঁকা। শুধু তিনজন যাত্রী। একটা বাচ্চা, একটা বুড়ো, আর আমি।\n\nস্টেশন আসতে আসতে বুড়ো লোকটা আমাকে বলল, "জানো, এই ট্রেনে একটা নিয়ম আছে। শেষ যাত্রী নিজে থেকে নামতে পারে না।"\n\nআমি হেসে বললাম, "কী আজব কথা!"\n\nবুড়ো বলল, "তুমি বিশ্বাস না করলেও সত্যি। আমি এই ট্রেনে ৩৭ বছর ধরে চলছি। একবারও নামতে পারিনি।"\n\nআমার হাসি মিলিয়ে গেল। আমি দেখলাম, বুড়োর হাত পার্থিব নয় — স্বচ্ছ।\n\nট্রেন থামল। সব দরজা খুলে গেল। আমি দৌড়ে নেমে গেলাম। পিছনে তাকিয়ে দেখলাম — ট্রেনটা নেই।\n\nশুধু একটা বুড়ো লোক দাঁড়িয়ে হাসছে...'
+  }
+];
+
+/* ============================================================
+   AI-এর ইমোশন সিস্টেম — মানুষের মতো
+   ============================================================ */
+var AI_EMOTIONS = {
+  joy: {
+    name: 'আনন্দ',
+    emoji: '😊',
+    words: ['হেসে ফেলল', 'খুশিতে লাফালো', 'আনন্দে নেচে উঠল', 'হৃদয় ভরে গেল', 'সুখে চোখ ভিজে গেল'],
+    color: '#fbbf24'
+  },
+  anger: {
+    name: 'রাগ',
+    emoji: '😡',
+    words: ['রাগে ফেটে পড়ল', 'দাঁত কড়মড় করে', 'চোখ লাল হয়ে গেল', 'রাগে কেঁপে উঠল', 'মুষ্টি শক্ত করল'],
+    color: '#ef4444'
+  },
+  stubborn: {
+    name: 'জিদ',
+    emoji: '😤',
+    words: ['জিদ করে বলল', 'একগুঁয়ে হয়ে বসে রইল', 'কিছুতেই রাজি হলো না', 'জিদ ধরে বলল', 'শক্ত হয়ে দাঁড়াল'],
+    color: '#f97316'
+  },
+  sadness: {
+    name: 'দুঃখ',
+    emoji: '😢',
+    words: ['চোখ ভিজে গেল', 'দীর্ঘশ্বাস ফেলল', 'বুক ভার হয়ে গেল', 'চুপ করে রইল', 'দুঃখে মাথা নিচু করল'],
+    color: '#6b7280'
+  },
+  fear: {
+    name: 'ভয়',
+    emoji: '😨',
+    words: ['ভয়ে কেঁপে উঠল', 'হাত-পা ঠান্ডা হয়ে গেল', 'বুক ধড়ফড় করল', 'শরীর কাঁপতে লাগল', 'দৌড়ে পালাতে চাইল'],
+    color: '#8b5cf6'
+  },
+  love: {
+    name: 'ভালোবাসা',
+    emoji: '💕',
+    words: ['হৃদয় গলে গেল', 'চোখে ভালোবাসা ঝলকে উঠল', 'বুকের ভেতর গরম ভাব', 'হাসিমুখে তাকাল', 'নরম হয়ে গেল'],
+    color: '#ec4899'
+  },
+  surprise: {
+    name: 'বিস্ময়',
+    emoji: '😲',
+    words: ['চোখ বড় হয়ে গেল', 'হাঁ হয়ে গেল', 'বিশ্বাস করতে পারল না', 'অবাক হয়ে তাকিয়ে রইল', 'মুখ দিয়ে কথা বের হলো না'],
+    color: '#06b6d4'
+  },
+  pride: {
+    name: 'গর্ব',
+    emoji: '😌',
+    words: ['বুক ফুলে উঠল', 'গর্বে চোখ জ্বলে উঠল', 'মাথা উঁচু করে দাঁড়াল', 'গর্বিত হাসি হাসল'],
+    color: '#10b981'
+  },
+  jealousy: {
+    name: 'ঈর্ষা',
+    emoji: '😒',
+    words: ['ঈর্ষায় চোখ সরু হয়ে গেল', 'হিংসায় জ্বলে উঠল', 'ঠোঁট বাঁকিয়ে বলল', 'অসন্তুষ্ট হয়ে তাকাল'],
+    color: '#84cc16'
+  },
+  loneliness: {
+    name: 'একাকিত্ব',
+    emoji: '🥺',
+    words: ['একা হয়ে গেল', 'কেউ নেই পাশে', 'শূন্য লাগছে', 'নিঃসঙ্গ হয়ে রইল', 'চারদিকে নীরবতা'],
+    color: '#a78bfa'
+  }
+};
+
+/* ============================================================
+   কার্ড রেন্ডার
+   ============================================================ */
+function renderStoryCard(story){
+  var liked = APP.liked.indexOf(story.id) !== -1;
+  var isAI = story.author === 'AI' || story.isAI;
+  return '<div class="story-card" onclick="openStory(\'' + story.id + '\')">' +
+    '<div class="story-cover">' +
+      '<div class="story-cover-emoji">' + story.emoji + '</div>' +
+      '<span class="story-cat-tag">' + story.category + '</span>' +
+      (isAI ? '<span class="ai-badge">✨ AI</span>' : '') +
+    '</div>' +
+    '<div class="story-body">' +
+      '<div class="story-title">' + escapeHtml(story.title) + '</div>' +
+      '<div class="story-desc">' + escapeHtml(story.desc || story.content.substring(0, 80)) + '</div>' +
+      '<div class="story-meta">' +
+        '<div class="author"><span class="avatar">' + (story.author ? story.author.charAt(0) : 'গ') + '</span> ' + escapeHtml(story.author) + '</div>' +
+        '<div class="story-stats">' +
+          '<span><i class="fas fa-heart" style="' + (liked ? 'color:#ef4444' : '') + '"></i> ' + story.likes + '</span>' +
+          '<span><i class="fas fa-clock"></i> ' + story.time + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+/* ============================================================
+   হোম পেজ রেন্ডার
+   ============================================================ */
+function renderHome(){
+  // ক্যাটাগরি
+  var catScroll = document.getElementById('catScroll');
+  if(catScroll && !catScroll.dataset.init){
+    catScroll.dataset.init = '1';
+    catScroll.innerHTML = CATEGORIES.map(function(c){
+      return '<button class="cat-chip' + (c.id === 'all' ? ' active' : '') + '" data-cat="' + c.id + '" onclick="filterCategory(\'' + c.id + '\')"><span class="cat-emoji">' + c.emoji + '</span>' + c.name + '</button>';
+    }).join('');
+  }
+  
+  // সব গল্প (স্টক + ইউজার + AI)
+  var allStories = getAllStories();
+  
+  // ট্রেন্ডিং (বেশি লাইক)
+  var trending = allStories.slice().sort(function(a,b){ return b.likes - a.likes; }).slice(0, 4);
+  var trendingEl = document.getElementById('trendingStories');
+  if(trendingEl) trendingEl.innerHTML = trending.map(renderStoryCard).join('');
+  
+  // AI গল্প
+  var aiStories = allStories.filter(function(s){ return s.isAI; }).slice(0, 4);
+  if(aiStories.length === 0){
+    aiStories = allStories.filter(function(s){ return s.category === 'রহস্য'; }).slice(0, 4);
+  }
+  var aiEl = document.getElementById('aiStories');
+  if(aiEl) aiEl.innerHTML = aiStories.map(renderStoryCard).join('');
+  
+  // শিশুদের গল্প
+  var kidStories = allStories.filter(function(s){ return s.category === 'শিশু'; }).slice(0, 4);
+  var kidEl = document.getElementById('kidStories');
+  if(kidEl) kidEl.innerHTML = kidStories.map(renderStoryCard).join('');
+  
+  // অডিও গল্প (র‍্যান্ডম)
+  var audioStories = allStories.slice().sort(function(){ return 0.5 - Math.random(); }).slice(0, 4);
+  var audioEl = document.getElementById('audioStories');
+  if(audioEl) audioEl.innerHTML = audioStories.map(renderStoryCard).join('');
+}
+
+function getAllStories(){
+  return STOCK_STORIES.concat(APP.userStories || []);
+}
+
+/* ============================================================
+   ক্যাটাগরি ফিল্টার
+   ============================================================ */
+function filterCategory(catId){
+  var all = getAllStories();
+  var filtered = catId === 'all' || catId === 'সব' ? all : all.filter(function(s){ return s.category === catId; });
+  
+  var container = document.getElementById('categoryUI');
+  if(!container) return;
+  
+  var catName = catId;
+  for(var i = 0; i < CATEGORIES.length; i++){
+    if(CATEGORIES[i].id === catId){ catName = CATEGORIES[i].name; break; }
+  }
+  
+  container.innerHTML = 
+    '<div class="section-head" style="margin-top:10px">' +
+      '<div class="section-title"><i class="fas fa-book"></i> ' + catName + ' গল্প</div>' +
+      '<span class="section-badge">' + filtered.length + 'টি গল্প</span>' +
+    '</div>' +
+    '<div class="story-grid">' +
+      (filtered.length ? filtered.map(renderStoryCard).join('') : '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">এই ক্যাটাগরিতে এখনো গল্প নেই। 🤖 AI গল্প বানাক?</div>') +
+    '</div>';
+  
+  // ক্যাটাগরি চিপ আপডেট
+  document.querySelectorAll('.cat-chip').forEach(function(c){
+    c.classList.toggle('active', c.dataset.cat === catId);
+  });
+  
+  switchPage('category');
+}
+
+/* ============================================================
+   গল্প খুলুন (পড়ার জন্য)
+   ============================================================ */
+function openStory(id){
+  var story = getAllStories().find(function(s){ return s.id === id; });
+  if(!story) return;
+  
+  // পড়া হয়েছে মার্ক করি
+  if(APP.read.indexOf(id) === -1){
+    APP.read.push(id);
+    saveData();
+  }
+  
+  var reader = document.getElementById('storyReader');
+  var liked = APP.liked.indexOf(id) !== -1;
+  
+  reader.innerHTML = 
+    '<button class="hero-btn ghost" style="margin-bottom:16px" onclick="switchPage(\'home\')">' +
+      '<i class="fas fa-arrow-left"></i> ফিরে যান' +
+    '</button>' +
+    '<div style="text-align:center;margin-bottom:24px">' +
+      '<div style="font-size:72px;margin-bottom:10px">' + story.emoji + '</div>' +
+      '<div style="display:inline-block;padding:4px 14px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);border-radius:99px;font-size:11px;font-weight:700;color:var(--gold-light);margin-bottom:12px">' + story.category + '</div>' +
+      '<h1 style="font-family:var(--font-story);font-size:clamp(22px,5vw,32px);font-weight:800;color:var(--text);margin-bottom:10px">' + escapeHtml(story.title) + '</h1>' +
+      '<div style="font-size:13px;color:var(--text-muted);display:flex;justify-content:center;gap:16px;flex-wrap:wrap">' +
+        '<span>✍️ ' + escapeHtml(story.author) + '</span>' +
+        '<span>⏱️ ' + story.time + '</span>' +
+        '<span>❤️ ' + story.likes + '</span>' +
+      '</div>' +
+    '</div>' +
+    '<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:24px;line-height:2;font-size:16px;color:var(--text);white-space:pre-wrap;font-family:var(--font-bn)">' + escapeHtml(story.content) + '</div>' +
+    '<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;justify-content:center">' +
+      '<button class="hero-btn ' + (liked ? '' : 'ghost') + '" onclick="toggleLike(\'' + id + '\')" id="likeBtn">' +
+        '<i class="fas fa-heart" style="' + (liked ? 'color:#ef4444' : '') + '"></i> ' + (liked ? 'লাইক করা হয়েছে' : 'লাইক করুন') +
+      '</button>' +
+      '<button class="hero-btn ghost" onclick="speakStory(\'' + escapeAttr(story.content.substring(0, 200)) + '\')">' +
+        '<i class="fas fa-volume-up"></i> শুনুন' +
+      '</button>' +
+      '<button class="hero-btn ghost" onclick="shareStory(\'' + escapeAttr(story.title) + '\')">' +
+        '<i class="fas fa-share"></i> শেয়ার' +
+      '</button>' +
+    '</div>';
+  
+  switchPage('story');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function toggleLike(id){
+  var idx = APP.liked.indexOf(id);
+  if(idx === -1) APP.liked.push(id);
+  else APP.liked.splice(idx, 1);
+  saveData();
+  openStory(id);
+  showToast(idx === -1 ? '❤️ লাইক করা হয়েছে' : 'লাইক সরানো হয়েছে');
+}
+
+function speakStory(text){
+  if(!('speechSynthesis' in window)){
+    showToast('এই ব্রাউজারে অডিও সাপোর্ট নেই');
+    return;
+  }
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'bn-BD';
+  u.rate = 0.9;
+  window.speechSynthesis.speak(u);
+  showToast('🔊 পড়া শুরু হয়েছে...');
+}
+
+function shareStory(title){
+  if(navigator.share){
+    navigator.share({ title: title, text: 'গল্প বাংলা থেকে পড়ুন: ' + title });
+  } else {
+    showToast('শেয়ার সাপোর্ট নেই');
+  }
+}
+
+/* ============================================================
+   পেজ সুইচ
+   ============================================================ */
+function switchPage(id, el){
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  var target = document.getElementById('page-' + id);
+  if(target) target.classList.add('active');
+  
+  document.querySelectorAll('.bnav-item').forEach(function(b){ b.classList.remove('active'); });
+  if(el) el.classList.add('active');
+  else {
+    var found = document.querySelector('.bnav-item[data-page="' + id + '"]');
+    if(found) found.classList.add('active');
+  }
+  
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  
+  if(id === 'home') renderHome();
+  if(id === 'category') filterCategory('all');
+  if(id === 'ai-story') renderAIStoryUI();
+  if(id === 'write') renderWriteUI();
+  if(id === 'profile') renderProfileUI();
+}
+
+/* ============================================================
+   থিম টগল
+   ============================================================ */
+function toggleTheme(){
+  var cur = document.documentElement.getAttribute('data-theme');
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  APP.theme = next;
+  saveData();
+  updateThemeIcon();
+}
+function updateThemeIcon(){
+  var t = document.documentElement.getAttribute('data-theme');
+  var icon = document.getElementById('themeIcon');
+  if(icon) icon.className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+/* ============================================================
+   Toast
+   ============================================================ */
+var TOAST_TIMER = null;
+function showToast(msg){
+  var t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(TOAST_TIMER);
+  TOAST_TIMER = setTimeout(function(){ t.classList.remove('show'); }, 2500);
+}
+
+/* ============================================================
+   Helpers
+   ============================================================ */
+function escapeHtml(s){
+  if(s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function escapeAttr(s){
+  if(s == null) return '';
+  return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+}
+
+/* ============================================================
+   Splash + Init
+   ============================================================ */
+(function(){
+  // "গল্প বাংলা" letter-by-letter
+  var title = document.getElementById('splashTitle');
+  if(title){
+    'গল্প বাংলা'.split('').forEach(function(ch, i){
+      var span = document.createElement('span');
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
+      span.style.animationDelay = (i * 0.1 + 0.3) + 's';
+      title.appendChild(span);
+    });
+  }
+  
+  // Splash স্টেটাস চেঞ্জ
+  var statuses = ['গল্পের পাতা উল্টাচ্ছি...', 'কল্পনার জগতে ঢুকছি...', 'প্রস্তুত হচ্ছি...'];
+  var si = 0;
+  var st = setInterval(function(){
+    si++;
+    if(si < statuses.length){
+      var s = document.getElementById('splashStatus');
+      if(s) s.textContent = statuses[si];
+    }
+  }, 800);
+  
+  // থিম লোড
+  if(APP.theme === 'light'){
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+  updateThemeIcon();
+  
+  // Splash শেষে সরান
+  setTimeout(function(){
+    var sp = document.getElementById('splash');
+    if(sp) sp.classList.add('hide');
+    clearInterval(st);
+    setTimeout(function(){
+      if(sp) sp.remove();
+      renderHome();
+    }, 800);
+  }, 2800);
+})();
+
+/* ============================================================
+   ⚠️ AI ফাংশন — পার্ট ৩-এ সম্পূর্ণ হবে
+   ============================================================ */
+function renderAIStoryUI(){
+  var el = document.getElementById('aiStoryUI');
+  if(!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:60px 20px"><div class="spinner" style="width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--gold);border-radius:50%;margin:0 auto 16px;animation:spin 1s linear infinite"></div><div>পার্ট ৩ লোড হচ্ছে...</div></div>';
+}
+
+function renderWriteUI(){
+  var el = document.getElementById('writeUI');
+  if(!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:60px 20px">✍️ লেখার স্ক্রিন — পার্ট ৩</div>';
+}
+
+function renderProfileUI(){
+  var el = document.getElementById('profileUI');
+  if(!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:60px 20px">👤 প্রোফাইল — পার্ট ৩</div>';
+}
+</script>
+
+<script>
+'use strict';
+
+/* ============================================================
+   ⚠️ আপনার Cloudflare Worker URL
+   ============================================================ */
+var WORKER_URL = 'https://lingo-ai.akijelectronic.workers.dev';
+// ⚠️ উপরে আপনার আসল Worker URL বসাবেন
+
+/* ============================================================
+   AI সিস্টেম প্রম্পট — মানুষের মতো ইমোশন
+   ============================================================ */
+var AI_STORY_PROMPT = 
+  'তুমি একজন প্রখ্যাত বাংলা গল্পকার — যিনি রবীন্দ্রনাথ, শরৎচন্দ্র, হুমায়ূন আহমেদ ও মানিক বন্দ্যোপাধ্যায়ের ধারায় গল্প লেখেন। ' +
+  'তোমার গল্প হবে সম্পূর্ণ বাংলায় — সহজ, প্রাণবন্ত, হৃদয়স্পর্শী। ' +
+  
+  'কাহিনির চরিত্ররা হবে মানুষের মতো — তাদের থাকবে রাগ, জিদ, ভালোবাসা, দুঃখ, আনন্দ, ভয়, হিংসা, লোভ, অনুতাপ। ' +
+  'চরিত্ররা কখনো একপাক্ষিক থাকবে না — তারা ভুল করবে, শুধরাবে, কাঁদবে, হাসবে, রাগ করবে, জিদ করবে। ' +
+  
+  'গল্পে অবশ্যই থাকবে — একটি শক্তিশালী কাহিনি, আকস্মিক মোড়, আবেগঘন দৃশ্য, এবং একটি হৃদয়স্পর্শী সমাপ্তি। ' +
+  
+  'বর্ণনার সময় পঞ্চইন্দ্রিয় ব্যবহার করবে — কী দেখা যাচ্ছে, কী শোনা যাচ্ছে, কী গন্ধ পাচ্ছে, কার স্পর্শ লাগছে। ' +
+  
+  'গল্প হবে ছোট — সবচেয়ে বেশি ৬-৮ অনুচ্ছেদ। প্রতিটি অনুচ্ছেদ ৩-৫ লাইন। ' +
+  'কোনো মার্কডাউন (** বা ##) ব্যবহার করবে না। সরাসরি গল্প লিখবে। ' +
+  'শুরুতে গল্পের একটি শিরোনাম দেবে, তারপর গল্প শুরু করবে।';
+
+/* ============================================================
+   ইমোশন-ভিত্তিক অ্যাডভান্সড প্রম্পট
+   ============================================================ */
+function buildStoryPrompt(topic, category, emotion, length, extra){
+  var emotionGuide = '';
+  
+  if(emotion === 'angry'){
+    emotionGuide = 'গল্পে থাকবে তীব্র রাগ ও সংঘর্ষ। চরিত্ররা রাগে ফেটে পড়বে, দাঁত কড়মড় করবে, মুখে কটু কথা বলবে। তবে রাগের মাঝেও থাকবে গভীর মানবিকতা।';
+  } else if(emotion === 'stubborn'){
+    emotionGuide = 'গল্পে থাকবে একগুঁয়ে জিদ। চরিত্ররা নিজের জিদে অনড় থাকবে, কারো কথা শুনবে না, বিপদের মুখেও পিছু হটবে না। শেষে হয় জিতে যাবে, নয় শিক্ষা পাবে।';
+  } else if(emotion === 'sad'){
+    emotionGuide = 'গল্পটি হবে হৃদয়বিদারক। চোখে পানি আসবে পড়ার সময়। চরিত্রদের জীবনে হারানো, বিরহ, একাকিত্ব থাকবে। তবে সমাপ্তিতে থাকবে একফোঁটা আশা।';
+  } else if(emotion === 'loving'){
+    emotionGuide = 'গল্পে থাকবে গভীর ভালোবাসা। মা-ছেলে, প্রেমিক-প্রেমিকা, বাবা-মেয়ে, বন্ধু-বন্ধু — যে সম্পর্কই হোক, তা হবে হৃদয়স্পর্শী। চোখের আড়াল হলেও হৃদয়ের আড়াল হয় না।';
+  } else if(emotion === 'fear'){
+    emotionGuide = 'গল্পটি হবে ভয়ংকর ও রহস্যময়। বুক ধড়ফড় করবে, শরীর ঠান্ডা হয়ে আসবে। তবে ভয়ের পেছনে থাকবে একটি গভীর সত্য।';
+  } else if(emotion === 'joy'){
+    emotionGuide = 'গল্পটি হবে হাসিখুশি ও আনন্দময়। পড়তে পড়তে মুখে হাসি আসবে। চরিত্ররা মজা করবে, প্র্যাংক করবে, হাসি-ঠাট্টা করবে।';
+  } else if(emotion === 'surprise'){
+    emotionGuide = 'গল্পে থাকবে অবিশ্বাস্য মোড়। শেষে এমন একটি ঘটনা ঘটবে যা কেউ ভাবতে পারবে না। শেষ লাইনে চমকে উঠবে পাঠক।';
+  } else {
+    emotionGuide = 'গল্পে থাকবে একাধিক আবেগের মিশ্রণ — আনন্দ, দুঃখ, রাগ, ভালোবাসা সব একসাথে।';
+  }
+  
+  var lengthGuide = length === 'short' ? '৪-৫ অনুচ্ছেদ' : (length === 'long' ? '৮-১০ অনুচ্ছেদ' : '৬-৭ অনুচ্ছেদ');
+  
+  var prompt = 
+    'বিষয়: ' + topic + '\n' +
+    'ক্যাটাগরি: ' + category + '\n' +
+    'অনুচ্ছেদ সংখ্যা: ' + lengthGuide + '\n\n' +
+    emotionGuide + '\n\n';
+  
+  if(extra && extra.trim()){
+    prompt += 'অতিরিক্ত নির্দেশনা: ' + extra.trim() + '\n\n';
+  }
+  
+  prompt += 'এখন একটি অসাধারণ গল্প লিখুন — যা পাঠকের হৃদয়ে গেঁথে যাবে।';
+  
+  return prompt;
+}
+
+/* ============================================================
+   AI গল্প রেন্ডার UI
+   ============================================================ */
+function renderAIStoryUI(){
+  var el = document.getElementById('aiStoryUI');
+  if(!el) return;
+  
+  el.innerHTML = 
+    '<div class="section-head" style="margin-top:10px">' +
+      '<div class="section-title"><i class="fas fa-magic"></i> AI গল্প বানান</div>' +
+      '<span class="section-badge">🤖 মানুষের মতো</span>' +
+    '</div>' +
+    
+    '<div style="background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(124,58,237,.08));border:1.5px solid rgba(139,92,246,.3);border-radius:18px;padding:22px;margin-bottom:20px">' +
+      '<div style="font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:18px">' +
+        '✨ শুধু বিষয় বলুন — AI মানুষের মতো ইমোশনসহ একটি সম্পূর্ণ গল্প লিখে দেবে। রাগ, জিদ, ভালোবাসা, দুঃখ — সব থাকবে।' +
+      '</div>' +
+      
+      '<label style="display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px">📝 গল্পের বিষয়</label>' +
+      '<input type="text" id="aiTopic" placeholder="যেমন: একটি ছেলে তার মাকে হারিয়ে ফেলল" style="width:100%;padding:12px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-family:inherit;outline:none;margin-bottom:16px">' +
+      
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">' +
+        '<div>' +
+          '<label style="display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px">🏷️ ক্যাটাগরি</label>' +
+          '<select id="aiCategory" style="width:100%;padding:12px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:13px;font-family:inherit;outline:none">' +
+            CATEGORIES.filter(function(c){ return c.id !== 'all'; }).map(function(c){
+              return '<option value="' + c.id + '">' + c.emoji + ' ' + c.name + '</option>';
+            }).join('') +
+          '</select>' +
+        '</div>' +
+        '<div>' +
+          '<label style="display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px">📏 দৈর্ঘ্য</label>' +
+          '<select id="aiLength" style="width:100%;padding:12px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:13px;font-family:inherit;outline:none">' +
+            '<option value="short">ছোট</option>' +
+            '<option value="medium" selected>মাঝারি</option>' +
+            '<option value="long">বড়</option>' +
+          '</select>' +
+        '</div>' +
+      '</div>' +
+      
+      '<label style="display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px">🎭 ইমোশন (গল্পের প্রাণ)</label>' +
+      '<div id="emotionPicker" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:16px">' +
+        Object.keys(AI_EMOTIONS).map(function(key){
+          var e = AI_EMOTIONS[key];
+          return '<button class="cat-chip" data-emotion="' + key + '" onclick="pickEmotion(\'' + key + '\',this)" style="flex-shrink:0">' + e.emoji + ' ' + e.name + '</button>';
+        }).join('') +
+      '</div>' +
+      
+      '<label style="display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px">💡 অতিরিক্ত চাহিদা (ঐচ্ছিক)</label>' +
+      '<textarea id="aiExtra" rows="2" placeholder="যেমন: গল্পে একটি নদী থাকবে, শেষে সবাই কেঁদে ফেলবে" style="width:100%;padding:12px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:13px;font-family:inherit;outline:none;margin-bottom:18px;resize:none"></textarea>' +
+      
+      '<button id="generateBtn" onclick="generateAIStory()" style="width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff;font-family:var(--font-en);font-weight:800;font-size:16px;box-shadow:0 6px 0 #5b21b6;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .15s">' +
+        '<i class="fas fa-magic"></i> গল্প বানাও' +
+      '</button>' +
+    '</div>' +
+    
+    '<div id="aiStoryResult"></div>';
+}
+
+var SELECTED_EMOTION = 'joy';
+function pickEmotion(key, el){
+  SELECTED_EMOTION = key;
+  document.querySelectorAll('#emotionPicker .cat-chip').forEach(function(c){
+    c.classList.remove('active');
+  });
+  el.classList.add('active');
+}
+
+/* ============================================================
+   AI গল্প তৈরি
+   ============================================================ */
+function generateAIStory(){
+  var topic = (document.getElementById('aiTopic').value || '').trim();
+  if(!topic){
+    showToast('⚠️ গল্পের বিষয় লিখুন');
+    return;
+  }
+  
+  var category = document.getElementById('aiCategory').value;
+  var length = document.getElementById('aiLength').value;
+  var extra = document.getElementById('aiExtra').value;
+  
+  var btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI গল্প লিখছে...';
+  
+  var resultEl = document.getElementById('aiStoryResult');
+  resultEl.innerHTML = 
+    '<div style="text-align:center;padding:40px 20px">' +
+      '<div style="font-size:52px;margin-bottom:16px;animation:pandaIdle 2s ease-in-out infinite">✍️</div>' +
+      '<div style="font-size:14px;color:var(--text-secondary)">AI মানুষ্য ইমোশনসহ গল্প লিখছে...</div>' +
+      '<div style="font-size:12px;color:var(--text-muted);margin-top:8px">রাগ, জিদ, ভালোবাসা — সব মিশিয়ে</div>' +
+    '</div>';
+  
+  var prompt = buildStoryPrompt(topic, category, SELECTED_EMOTION, length, extra);
+  var messages = [
+    { role: 'system', content: AI_STORY_PROMPT },
+    { role: 'user', content: prompt }
+  ];
+  
+  callAI(messages).then(function(story){
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-magic"></i> আবার বানাও';
+    
+    // শিরোনাম বের করি
+    var lines = story.split('\n').filter(function(l){ return l.trim(); });
+    var title = lines[0] || topic;
+    title = title.replace(/^["'#\s*]+|["'#\s*]+$/g, '').substring(0, 80);
+    var body = lines.slice(1).join('\n\n').trim();
+    if(body.length < 50) body = story;
+    
+    var emo = AI_EMOTIONS[SELECTED_EMOTION];
+    var catEmoji = '📖';
+    for(var i = 0; i < CATEGORIES.length; i++){
+      if(CATEGORIES[i].id === category){ catEmoji = CATEGORIES[i].emoji; break; }
+    }
+    
+    resultEl.innerHTML = 
+      '<div style="background:var(--surface);border:2px solid var(--gold);border-radius:18px;padding:22px;margin-top:20px">' +
+        '<div style="text-align:center;margin-bottom:18px">' +
+          '<div style="font-size:52px;margin-bottom:8px">' + catEmoji + '</div>' +
+          '<div style="display:inline-block;padding:4px 12px;background:rgba(251,191,36,.15);border-radius:99px;font-size:11px;font-weight:700;color:var(--gold-light);margin-bottom:8px">' + category + ' • ' + emo.emoji + ' ' + emo.name + '</div>' +
+          '<h2 style="font-family:var(--font-story);font-size:24px;font-weight:800;color:var(--text);margin-bottom:6px">' + escapeHtml(title) + '</h2>' +
+        '</div>' +
+        
+        '<div style="line-height:2;font-size:15px;color:var(--text);white-space:pre-wrap;padding:16px;background:var(--bg-alt);border-radius:12px">' + escapeHtml(body) + '</div>' +
+        
+        '<div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;justify-content:center">' +
+          '<button onclick="saveAIStory(\'' + escapeAttr(title) + '\',\'' + escapeAttr(body) + '\',\'' + category + '\',\'' + catEmoji + '\')" style="padding:12px 20px;border-radius:12px;background:linear-gradient(135deg,#b45309,#92400e);color:#fff;font-weight:700;font-size:13px;box-shadow:0 4px 0 #78350f;display:inline-flex;align-items:center;gap:6px">' +
+            '<i class="fas fa-save"></i> সেভ করুন' +
+          '</button>' +
+          '<button onclick="speakStory(\'' + escapeAttr(body.substring(0, 250)) + '\')" style="padding:12px 20px;border-radius:12px;background:transparent;border:1.5px solid var(--gold);color:var(--gold-light);font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:6px">' +
+            '<i class="fas fa-volume-up"></i> শুনুন' +
+          '</button>' +
+        '</div>' +
+      '</div>';
+    
+    showToast('✅ গল্প তৈরি হয়েছে!');
+  }).catch(function(err){
+    console.error(err);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-magic"></i> আবার চেষ্টা করুন';
+    resultEl.innerHTML = 
+      '<div style="padding:20px;background:var(--surface);border:2px solid var(--danger);border-radius:14px;text-align:center">' +
+        '<div style="font-size:32px;margin-bottom:8px">❌</div>' +
+        '<div style="font-size:14px;color:var(--text)">গল্প তৈরি করতে সমস্যা হয়েছে</div>' +
+        '<div style="font-size:12px;color:var(--text-muted);margin-top:8px">' + escapeHtml(err.message || 'Unknown error') + '</div>' +
+      '</div>';
+  });
+}
+
+/* ============================================================
+   AI গল্প সেভ
+   ============================================================ */
+function saveAIStory(title, body, category, emoji){
+  var story = {
+    id: 'ai_' + Date.now(),
+    title: title,
+    content: body,
+    category: category,
+    emoji: emoji,
+    author: 'AI',
+    isAI: true,
+    time: Math.ceil(body.length / 400) + ' মিনিট',
+    likes: 0,
+    createdAt: Date.now()
+  };
+  
+  if(!APP.userStories) APP.userStories = [];
+  APP.userStories.unshift(story);
+  saveData();
+  showToast('💾 সেভ হয়েছে!');
+  setTimeout(function(){ switchPage('home'); }, 800);
+}
+
+/* ============================================================
+   নিজে গল্প লেখার UI
+   ============================================================ */
+function renderWriteUI(){
+  var el = document.getElementById('writeUI');
+  if(!el) return;
+  
+  el.innerHTML = 
+    '<div class="section-head" style="margin-top:10px">' +
+      '<div class="section-title"><i class="fas fa-pen"></i> নিজে গল্প লিখুন</div>' +
+    '</div>' +
+    
+    '<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:22px">' +
+      '<label style="display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px">📖 শিরোনাম</label>' +
+      '<input type="text" id="userStoryTitle" placeholder="গল্পের নাম লিখুন" style="width:100%;padding:12px 16px;background:var(--bg-alt);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;font-family:inherit;outline:none;margin-bottom:14px">' +
+      
+      '<label style="display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px">🏷️ ক্যাটাগরি</label>' +
+      '<select id="userStoryCat" style="width:100%;padding:12px 16px;background:var(--bg-alt);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:13px;font-family:inherit;outline:none;margin-bottom:14px">' +
+        CATEGORIES.filter(function(c){ return c.id !== 'all'; }).map(function(c){
+          return '<option value="' + c.id + '">' + c.emoji + ' ' + c.name + '</option>';
+        }).join('') +
+      '</select>' +
+      
+      '<label style="display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px">✍️ গল্প লিখুন</label>' +
+      '<textarea id="userStoryBody" rows="12" placeholder="এখানে আপনার গল্প লিখুন..." style="width:100%;padding:16px;background:var(--bg-alt);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;font-family:var(--font-bn);line-height:1.9;outline:none;resize:vertical"></textarea>' +
+      
+      '<button onclick="saveUserStory()" style="width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,#b45309,#92400e);color:#fff;font-family:var(--font-en);font-weight:800;font-size:16px;box-shadow:0 6px 0 #78350f;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px">' +
+        '<i class="fas fa-save"></i> গল্প সেভ করুন' +
+      '</button>' +
+    '</div>' +
+    
+    '<div style="margin-top:30px">' +
+      '<div class="section-head">' +
+        '<div class="section-title"><i class="fas fa-book"></i> আপনার গল্পসমূহ</div>' +
+      '</div>' +
+      '<div class="story-grid" id="myStories">' +
+        (APP.userStories && APP.userStories.length 
+          ? APP.userStories.map(renderStoryCard).join('') 
+          : '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">এখনো কোনো গল্প লেখেননি</div>') +
+      '</div>' +
+    '</div>';
+}
+
+function saveUserStory(){
+  var title = (document.getElementById('userStoryTitle').value || '').trim();
+  var body = (document.getElementById('userStoryBody').value || '').trim();
+  var category = document.getElementById('userStoryCat').value;
+  
+  if(!title || !body){
+    showToast('⚠️ শিরোনাম ও গল্প দুটোই লিখুন');
+    return;
+  }
+  
+  var emoji = '📖';
+  for(var i = 0; i < CATEGORIES.length; i++){
+    if(CATEGORIES[i].id === category){ emoji = CATEGORIES[i].emoji; break; }
+  }
+  
+  var story = {
+    id: 'user_' + Date.now(),
+    title: title,
+    content: body,
+    category: category,
+    emoji: emoji,
+    author: 'আপনি',
+    time: Math.ceil(body.length / 400) + ' মিনিট',
+    likes: 0,
+    createdAt: Date.now()
+  };
+  
+  if(!APP.userStories) APP.userStories = [];
+  APP.userStories.unshift(story);
+  saveData();
+  
+  document.getElementById('userStoryTitle').value = '';
+  document.getElementById('userStoryBody').value = '';
+  
+  showToast('💾 গল্প সেভ হয়েছে!');
+  renderWriteUI();
+}
+
+/* ============================================================
+   প্রোফাইল UI
+   ============================================================ */
+function renderProfileUI(){
+  var el = document.getElementById('profileUI');
+  if(!el) return;
+  
+  var userCount = (APP.userStories || []).length;
+  var aiCount = (APP.userStories || []).filter(function(s){ return s.isAI; }).length;
+  var readCount = (APP.read || []).length;
+  var likedCount = (APP.liked || []).length;
+  
+  el.innerHTML = 
+    '<div class="section-head" style="margin-top:10px">' +
+      '<div class="section-title"><i class="fas fa-user"></i> প্রোফাইল</div>' +
+    '</div>' +
+    
+    '<div style="background:linear-gradient(135deg,rgba(180,83,9,.25),rgba(146,64,14,.1));border:1.5px solid rgba(251,191,36,.3);border-radius:18px;padding:24px;text-align:center;margin-bottom:20px">' +
+      '<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#d97706);display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto 12px;box-shadow:0 6px 20px rgba(251,191,36,.4)">📖</div>' +
+      '<h2 style="font-family:var(--font-story);font-size:22px;font-weight:800;color:var(--gold-light)">গল্প-পাঠক</h2>' +
+      '<p style="font-size:12px;color:var(--text-muted);margin-top:4px">বাংলা গল্পের জগতে স্বাগতম</p>' +
+    '</div>' +
+    
+    '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px">' +
+      '<div style="padding:18px;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;text-align:center">' +
+        '<div style="font-size:26px;margin-bottom:6px">📖</div>' +
+        '<div style="font-family:var(--font-en);font-size:22px;font-weight:800;color:var(--gold-light)">' + readCount + '</div>' +
+        '<div style="font-size:11px;color:var(--text-muted);font-weight:700;margin-top:2px">পড়া গল্প</div>' +
+      '</div>' +
+      '<div style="padding:18px;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;text-align:center">' +
+        '<div style="font-size:26px;margin-bottom:6px">✍️</div>' +
+        '<div style="font-family:var(--font-en);font-size:22px;font-weight:800;color:var(--gold-light)">' + userCount + '</div>' +
+        '<div style="font-size:11px;color:var(--text-muted);font-weight:700;margin-top:2px">আপনার গল্প</div>' +
+      '</div>' +
+      '<div style="padding:18px;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;text-align:center">' +
+        '<div style="font-size:26px;margin-bottom:6px">🤖</div>' +
+        '<div style="font-family:var(--font-en);font-size:22px;font-weight:800;color:var(--gold-light)">' + aiCount + '</div>' +
+        '<div style="font-size:11px;color:var(--text-muted);font-weight:700;margin-top:2px">AI গল্প</div>' +
+      '</div>' +
+      '<div style="padding:18px;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;text-align:center">' +
+        '<div style="font-size:26px;margin-bottom:6px">❤️</div>' +
+        '<div style="font-family:var(--font-en);font-size:22px;font-weight:800;color:var(--gold-light)">' + likedCount + '</div>' +
+        '<div style="font-size:11px;color:var(--text-muted);font-weight:700;margin-top:2px">পছন্দ</div>' +
+      '</div>' +
+    '</div>' +
+    
+    '<button onclick="confirmReset()" style="width:100%;padding:14px;border-radius:14px;background:rgba(239,68,68,.1);border:1.5px solid rgba(239,68,68,.4);color:#ef4444;font-weight:700;font-size:14px">' +
+      '<i class="fas fa-rotate-left"></i> সব ডেটা রিসেট করুন' +
+    '</button>';
+}
+
+function confirmReset(){
+  if(!confirm('সব ডেটা মুছে যাবে। নিশ্চিত?')) return;
+  localStorage.removeItem(STORE_KEY);
+  APP = { userStories: [], liked: [], read: [], theme: 'dark' };
+  saveData();
+  showToast('সব ডেটা রিসেট হয়েছে');
+  switchPage('home');
+}
+
+/* ============================================================
+   AI কল
+   ============================================================ */
+function callAI(messages){
+  return fetch(WORKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: messages })
+  })
+  .then(function(res){
+    if(!res.ok){
+      return res.text().then(function(txt){
+        throw new Error('HTTP ' + res.status);
+      });
+    }
+    return res.json();
+  })
+  .then(function(data){
+    if(data && data.choices && data.choices[0] && data.choices[0].message){
+      return data.choices[0].message.content.trim();
+    }
+    if(data && data.error) throw new Error(data.error.message || 'AI error');
+    throw new Error('উত্তর পাওয়া যায়নি');
+  });
+}
+
+/* ============================================================
+   প্রথম AI গল্প অটো-লোড (প্রথমবার খুললে)
+   ============================================================ */
+(function(){
+  if(!APP.userStories) APP.userStories = [];
+  
+  // যদি কোনো AI গল্প না থাকে — একটি AI গল্প তৈরি করি
+  var hasAI = APP.userStories.some(function(s){ return s.isAI; });
+  if(!hasAI){
+    // ব্যাকগ্রাউন্ডে AI গল্প লোড (৫ সেকেন্ড পরে)
+    setTimeout(function(){
+      if(!navigator.onLine) return;
+      console.log('🤖 প্রথম AI গল্প লোড হচ্ছে...');
+      var prompt = 'একটি ছোট সুন্দর গল্প লিখুন — একটি ছোট মেয়ে আর তার দাদির সম্পর্ক নিয়ে।';
+      callAI([
+        { role: 'system', content: AI_STORY_PROMPT },
+        { role: 'user', content: prompt }
+      ]).then(function(story){
+        var lines = story.split('\n').filter(function(l){ return l.trim(); });
+        var title = lines[0] || 'ছোট মেয়ে ও দাদি';
+        title = title.replace(/^["'#\s*]+|["'#\s*]+$/g, '');
+        var body = lines.slice(1).join('\n\n').trim();
+        if(body.length < 30) body = story;
+        
+        APP.userStories.unshift({
+          id: 'ai_init_' + Date.now(),
+          title: title,
+          content: body,
+          category: 'জীবন',
+          emoji: '🌱',
+          author: 'AI',
+          isAI: true,
+          time: '৫ মিনিট',
+          likes: 12,
+          createdAt: Date.now()
+        });
+        saveData();
+        renderHome();
+        console.log('✅ প্রথম AI গল্প যোগ হয়েছে');
+      }).catch(function(e){
+        console.log('⚠️ AI গল্প লোড হয়নি:', e.message);
+      });
+    }, 5000);
+  }
+})();
+
+/* ============================================================
+   Splash শেষ হলে হোম রেন্ডার
+   ============================================================ */
+setTimeout(function(){
+  renderHome();
+}, 3000);
+</script>
+</body>
+</html>
